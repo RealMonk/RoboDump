@@ -6,17 +6,18 @@ import java.awt.*;
 import java.nio.file.Path;
 
 public class Tile extends Entity {
-    private Color color;
     Path path;
     GameJPanel gJP;
+    private final Color color;
 
-    public Tile(GameJPanel gJP,Color color,int cordX, int cordY){
+    public Tile(GameJPanel gJP, Color color, int cordX, int cordY) {
         this.gJP = gJP;
         this.color = color;
         this.setCordX(cordX);
         this.setCordY(cordY);
 
     }
+
     @Override
     public void update() {
     }
@@ -31,7 +32,6 @@ public class Tile extends Entity {
     public Color getColor() {
         return color;
     }
-
 
 
 }
