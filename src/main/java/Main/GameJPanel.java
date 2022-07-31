@@ -3,6 +3,7 @@ package Main;
 import Beings.Entity;
 import Beings.Player;
 import Beings.Tile;
+import Beings.mario;
 import Forces.Force;
 import Forces.Gravity;
 
@@ -24,11 +25,14 @@ public class GameJPanel extends JPanel implements Runnable {
     //INIT TIME VARs
     final int FPS = 60;
     double drawInterval = 1000000000f / FPS;
+    //INIT OBJ COLLECTIONS
     List<Entity> allEntity = new ArrayList<>();
     List<Force> allForce = new ArrayList<>();
     List<Entity> allTiles = new ArrayList<>();
+
+    //TEMP OBJ
     EntityPainter entityPainter;
-    Player player = new Player(this);
+    Player player = new Player();
     Force gravity = new Gravity();
     static GameJPanel gJP = new GameJPanel();
 
@@ -46,6 +50,8 @@ public class GameJPanel extends JPanel implements Runnable {
         this.addKeyListener(inputHandler);
         this.setFocusable(true);
         entityPainter = new EntityPainter();
+
+        allEntity.add(new mario());
         allEntity.add(player);
         allForce.add(gravity);
         allTiles.add(tile1);
@@ -90,9 +96,10 @@ public class GameJPanel extends JPanel implements Runnable {
             for (Force f: allForce
                  ) {
                 f.influence(e);
-                e.update();
+
 
             }
+            e.update();
         }
 
 
@@ -102,12 +109,17 @@ public class GameJPanel extends JPanel implements Runnable {
         super.paintComponent(graphics);
         Graphics2D g2D = (Graphics2D) graphics;
 
-        //DRAW ALL
+//        //DRAW ALL
 //        for (Entity ent: allEntity) {
-//            entityPainter.draw(g2D,ent,tileSize);
+//            entityPainter.draw(g2D,ent,gJP);
 //        }
+
+
+//        Stream.of(allTiles.stream(),allEntity.stream()).flatMap(s -> s).forEach(s1 -> {
+//            s1.draw(g2D);
+//        });
         Stream.of(allTiles.stream(),allEntity.stream()).flatMap(s -> s).forEach(s1 -> {
-            s1.draw(g2D);
+            entityPainter.draw(g2D,s1,gJP);
         });
 
         g2D.dispose();

@@ -4,7 +4,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class InputHandler implements KeyListener {
-    public boolean upPressed, downPressed, leftPressed, rightPressed;
+    public boolean upPressed, downPressed, leftPressed, rightPressed,shiftPressed;
     static private InputHandler ih;
 
     private InputHandler(){}
@@ -41,6 +41,10 @@ public class InputHandler implements KeyListener {
                 System.out.println("Going Right");
                 rightPressed = true;
             }
+            case KeyEvent.VK_SHIFT -> {
+                System.out.println("Going FAST");
+                shiftPressed = true;
+            }
         }
     }
 
@@ -49,20 +53,19 @@ public class InputHandler implements KeyListener {
         int code = e.getKeyCode();
         switch (code) {
             case KeyEvent.VK_W,KeyEvent.VK_UP -> {
-                System.out.println("Going Up");
                 upPressed = false;
             }
             case KeyEvent.VK_S,KeyEvent.VK_DOWN -> {
-                System.out.println("Going Down");
                 downPressed = false;
             }
             case KeyEvent.VK_A,KeyEvent.VK_LEFT -> {
-                System.out.println("Going Left");
                 leftPressed = false;
             }
             case KeyEvent.VK_D,KeyEvent.VK_RIGHT -> {
-                System.out.println("Going Right");
                 rightPressed = false;
+            }
+            case KeyEvent.VK_SHIFT -> {
+                shiftPressed = false;
             }
         }
     }

@@ -5,18 +5,23 @@ import Main.GameJPanel;
 import java.awt.*;
 
 public class mario extends Entity{
-    GameJPanel gJP = new GameJPanel();
+    public mario(){
+        setWeightless(true);
+        setCordX(300);
+        setCordY(500);
+    }
+
     @Override
     public void update() {
         //TODO impl update to monster Mario
     }
 
-    @Override
-    public void draw(Graphics2D g) {
-        g.setColor(this.getColor());
-        g.fillRect(this.getCordX(),this.getCordY(),gJP.tileSize,gJP.tileSize);
-        g.dispose();
-    }
+//    @Override
+//    public void draw(Graphics2D g) {
+//        g.setColor(this.getColor());
+//        g.fillRect(this.getCordX(),this.getCordY(),gJP.tileSize,gJP.tileSize);
+//
+//    }
 
 
     @Override

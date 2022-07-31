@@ -1,17 +1,35 @@
 package Beings;
 
-import Main.Drawable;
-
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
-public abstract class Entity implements Drawable {
+public abstract class Entity {
     private int cordX;
     private int cordY;
     private int speed;
-    public abstract void update();
-    public abstract void draw(Graphics2D g);
+    private boolean weightless;
+    public BufferedImage currentSprite;
+    public Color getColor() {
+        return Color.CYAN;
+    }
 
-    @Override
+    public BufferedImage getCurrentSprite(){
+        return currentSprite;
+    }
+
+    public void setWeightless(boolean weightless) {
+        this.weightless = weightless;
+    }
+
+    public boolean isWeightless() {
+        return this.weightless;
+    }
+
+
+    public abstract void update();
+//    public abstract void draw(Graphics2D g);
+
+
     public int getCordX() {
         return cordX;
     }
@@ -20,7 +38,7 @@ public abstract class Entity implements Drawable {
         this.cordX = cordX;
     }
 
-    @Override
+
     public int getCordY() {
         return cordY;
     }
