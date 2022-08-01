@@ -16,21 +16,20 @@ public class Player extends Entity {
     private final int animationSpeed = 2;
     boolean standing = false;
     int standingCounter = 0;
-    static final private InputHandler inputHandler = InputHandler.getInputHandler();
+    private final InputHandler inputH;
     private final BufferedImage[] up = new BufferedImage[2];
     private final BufferedImage[] down = new BufferedImage[2];
     private final BufferedImage[] left = new BufferedImage[2];
     private final BufferedImage[] right = new BufferedImage[2];
-
-    public int cordX;
-    public int cordY;
+    public int cordX, cordY, speed;
     public final int screenX;
     public final int screenY;
-    public Player(GameJPanel gJP) {
+    public Player(GameJPanel gJP,InputHandler inputH) {
         this.gJP = gJP;
-        this.setSpeed(2);
-        this.setCordX(100);
-        this.setCordY(100);
+        this.inputH = inputH;
+        this.speed = 2;
+        this.cordX = 100;
+        this.cordY = 100;
         this.setWeightless(true);
         screenX = gJP.getScreenWidth()/2 - (gJP.tileSize/2);
         screenY = gJP.getScreenHeight()/2 - (gJP.tileSize/2);
@@ -53,8 +52,7 @@ public class Player extends Entity {
     @Override
     public void update() {
 
-
-        if  (inputHandler.xDirection == Direction.CENTER && inputHandler.yDirection == Direction.CENTER){
+        if  (inputH.xDirection == Direction.CENTER && inputH.yDirection == Direction.CENTER){
             if (standingCounter < 21){
                 standingCounter++;
             } else {
@@ -65,21 +63,20 @@ public class Player extends Entity {
             standingCounter = 0;
         }
 
+        if (inputH.shiftPressed) {
+            speed = 4;
+        } else {
+            speed = 3;
+        }
 
-        if (!inputHandler.shiftPressed) {
-            this.setSpeed(3);
-        }
-        if (inputHandler.shiftPressed) {
-            this.setSpeed(4);
-        }
-        switch (inputHandler.xDirection){
+        switch (inputH.xDirection){
             case LEFT -> {this.cordX -= speed; direction = Direction.LEFT; }
             case RIGHT -> {this.cordX += speed;direction = Direction.RIGHT; }
         }
-        switch (inputHandler.yDirection){
+
+        switch (inputH.yDirection){
             case UP -> {cordY -= speed; direction = Direction.UP; }
             case DOWN -> {cordY += speed; direction = Direction.DOWN; }
-
         }
 
         switch (direction){
@@ -88,15 +85,14 @@ public class Player extends Entity {
             case UP -> {this.currentSprite[0] = up[frameNumber];}
             case DOWN -> {this.currentSprite[0] = down[frameNumber];}
         }
-//        System.out.println(cordX);
-//        System.out.println(cordY);
-        if (!(inputHandler.yDirection == Direction.CENTER) || !(inputHandler.xDirection == Direction.CENTER)){
+
+        if (!(inputH.yDirection == Direction.CENTER) || !(inputH.xDirection == Direction.CENTER)){
             animationForward();
         }
 
     }
 
-    public void draw(Graphics2D g2D){
+    public void drawPlayer(Graphics2D g2D){
         g2D.drawImage(currentSprite[0],screenX,screenY,gJP.tileSize,gJP.tileSize,null);
 
     }

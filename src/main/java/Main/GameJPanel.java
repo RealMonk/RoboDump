@@ -2,7 +2,7 @@ package Main;
 
 import Beings.Entity;
 import Beings.Player;
-import Beings.Tile;
+import Beings.TileManager;
 import Beings.mario;
 import Forces.Force;
 import Forces.Gravity;
@@ -12,7 +12,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 public class GameJPanel extends JPanel implements Runnable {
     //INIT TIME VARs
@@ -36,38 +35,30 @@ public class GameJPanel extends JPanel implements Runnable {
     List<Force> allForce = new ArrayList<>();
 
     //TEMP OBJ
-    EntityPainter entityPainter;
-    Player player;
+    public Player player;
     Force gravity = new Gravity();
-    Tile tile1 = new Tile(this, Color.green, 0, 0);
-    static int[][] map = new int[50][50];
+    TileManager tileManager;
 
     // WORLD SETTINGS
     public final int maxWorldCol = 50;
     public final int maxWorldRow = 50;
-    public final int worldWidth = tileSize * maxWorldCol;
-    public final int worldHeight = tileSize * maxWorldRow;
-    int mapX = 0;
-    int mapY = 0;
 
 
-    InputHandler inputHandler = InputHandler.getInputHandler();
+
+    InputHandler inputH;
     Thread gameThread;
 
     public GameJPanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
-        this.addKeyListener(inputHandler);
         this.setFocusable(true);
-        entityPainter = new EntityPainter();
         allEntity.add(new mario());
-
         allForce.add(gravity);
-
-        player = new Player(this);
-
-
+        inputH = new InputHandler();
+        this.addKeyListener(inputH);
+        player = new Player(this,inputH);
+        tileManager = new TileManager(this,player);
     }
 
 
@@ -78,7 +69,6 @@ public class GameJPanel extends JPanel implements Runnable {
 
     @Override
     public void run() {
-        map = Loader.getMap();
         double timeDelta = 0;
         long lastTime = System.nanoTime();
         long currentTIme;
@@ -98,34 +88,18 @@ public class GameJPanel extends JPanel implements Runnable {
     }
 
     public void updateGameState() {
-        gravity.influence(gJP.player);
-        gJP.player.update();
+        gravity.influence(player);
+        player.update();
     }
 
     public void paintComponent(Graphics graphics) {
 
         super.paintComponent(graphics);
         Graphics2D g2D = (Graphics2D) graphics;
-        for (int y = 0; y < 50; y++) {
-            for (int x = 0; x < 50; x++) {
-                mapX = x*gJP.tileSize - gJP.player.cordX + gJP.player.screenX;
-                mapY = y*gJP.tileSize - gJP.player.cordY + gJP.player.screenY;
-                if (x*gJP.tileSize +tileSize > gJP.player.cordX - gJP.player.screenX &&
-                    x*gJP.tileSize- tileSize< gJP.player.cordX + gJP.player.screenX &&
-                        y*gJP.tileSize+ tileSize> gJP.player.cordY - gJP.player.screenX &&
-                        y*gJP.tileSize- tileSize< gJP.player.cordY + gJP.player.screenX) {
-                    entityPainter.drawTile(g2D, tile1, mapX, mapY, map[y][x], this);
-                }
-
-            }
-        }
-
-
-//            Stream.of(allEntity.stream()).flatMap(s -> s).forEach(s1 -> entityPainter.draw(g2D, s1, 0, gJP));
-            gJP.player.draw(g2D);
-
-
-            g2D.dispose();
+//      Stream.of(allEntity.stream()).flatMap(s -> s).forEach(s1 -> entityPainter.draw(g2D, s1, 0, gJP));
+        tileManager.drawTiles(g2D);
+        player.drawPlayer(g2D);
+        g2D.dispose();
         }
 }
 

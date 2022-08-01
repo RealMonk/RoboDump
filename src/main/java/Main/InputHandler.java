@@ -6,23 +6,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class InputHandler implements KeyListener {
-    static private InputHandler ih;
     public boolean upPressed, downPressed, leftPressed, rightPressed, shiftPressed;
-    public int keysInputed = 0;
-    private final int inputLimit = 2;
     public Entity.Direction xDirection = Entity.Direction.CENTER;
     public Entity.Direction yDirection = Entity.Direction.CENTER;
 
-    private InputHandler() {
-    }
-//    private static final InputHandler inputHandlerObj = new InputHandler();
 
-    public static InputHandler getInputHandler() {
-        if (ih == null) {
-            ih = new InputHandler();
-        }
-        return ih;
-    }
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -37,7 +25,7 @@ public class InputHandler implements KeyListener {
         //region v1
         switch (code) {
             case KeyEvent.VK_W, KeyEvent.VK_UP -> {
-//                System.out.println("Going Up");
+                System.out.println("Going Up");
                 upPressed = true;
                 if (!downPressed){
                     yDirection = Entity.Direction.UP;
@@ -46,7 +34,7 @@ public class InputHandler implements KeyListener {
                 }
             }
             case KeyEvent.VK_S, KeyEvent.VK_DOWN -> {
-//                System.out.println("Going Down");
+                System.out.println("Going Down");
                 downPressed = true;
                 if (!upPressed){
                     yDirection = Entity.Direction.DOWN;
@@ -55,7 +43,7 @@ public class InputHandler implements KeyListener {
                 }
             }
             case KeyEvent.VK_A, KeyEvent.VK_LEFT -> {
-//                System.out.println("Going Left");
+                System.out.println("Going Left");
                 leftPressed = true;
                 if (!rightPressed){
                     xDirection = Entity.Direction.LEFT;
@@ -64,7 +52,7 @@ public class InputHandler implements KeyListener {
                 }
             }
             case KeyEvent.VK_D, KeyEvent.VK_RIGHT -> {
-//                System.out.println("Going Right");
+                System.out.println("Going Right");
                 rightPressed = true;
                 if (!leftPressed){
                     xDirection = Entity.Direction.RIGHT;
@@ -74,7 +62,7 @@ public class InputHandler implements KeyListener {
 
             }
             case KeyEvent.VK_SHIFT -> {
-//                System.out.println("Going FAST");
+                System.out.println("Going FAST");
                 shiftPressed = true;
 
             }
