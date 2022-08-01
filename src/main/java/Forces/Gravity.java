@@ -1,15 +1,16 @@
 package Forces;
 
 import Beings.Entity;
+import Beings.Player;
 
 public class Gravity implements Force{
-    public double gravity = 2;
+    public int gravity = 2;
 
     @Override
-    public void influence(Entity ent){
+    public void influence(Player ent){
         //TODO check coord precision lose on gravity application
         if (!ent.isWeightless()) {
-            ent.setCordY((int) (ent.getCordY() + gravity));
+            ent.cordY=(ent.cordY + gravity);
         }
     }
 }

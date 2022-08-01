@@ -12,12 +12,15 @@ public abstract class Entity {
     @Getter
     protected final Color color = Color.CYAN;
 
-    @Getter
-    protected BufferedImage currentSprite;
+    public BufferedImage getCurrentSprite(int x ) {
+        return currentSprite[x];
+    }
+
+    protected BufferedImage[] currentSprite = new BufferedImage[100];
 
     @Getter
     @Setter
-    protected int cordX, cordY, speed;
+    public int cordX, cordY, speed;
 
     @Getter
     @Setter
