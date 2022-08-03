@@ -1,5 +1,7 @@
-package Beings;
+package Main;
 
+import Beings.Player;
+import Beings.Tile;
 import Main.GameJPanel;
 
 import javax.imageio.ImageIO;
@@ -13,7 +15,8 @@ public class TileManager {
     public final int worldMaxHeight;
     GameJPanel gJP;
     BufferedImage[] currentSprite = new BufferedImage[100];
-    private final int[][] world;
+    Tile[] tiles;
+    public final int[][] world;
     private final Player player;
 
     public TileManager(GameJPanel gJP,Player player) {
@@ -23,13 +26,17 @@ public class TileManager {
         worldMaxHeight = gJP.tileSize * gJP.maxWorldRow;
         world = new int[gJP.maxWorldRow][gJP.maxWorldCol];
         getMap();
+        tiles = new Tile[10];
         try {
-            currentSprite[0] = ImageIO.read(getClass().getResourceAsStream("/tiles/grass01.png"));
-            currentSprite[1] = ImageIO.read(getClass().getResourceAsStream("/tiles/wall.png"));
-            currentSprite[2] = ImageIO.read(getClass().getResourceAsStream("/tiles/water01.png"));
-            currentSprite[3] = ImageIO.read(getClass().getResourceAsStream("/tiles/floor01.png"));
-            currentSprite[4] = ImageIO.read(getClass().getResourceAsStream("/tiles/tree.png"));
-            currentSprite[5] = ImageIO.read(getClass().getResourceAsStream("/tiles/road00.png"));
+            tiles[0] = new Tile(ImageIO.read(getClass().getResourceAsStream("/tiles/grass01.png")));
+            tiles[1] = new Tile(ImageIO.read(getClass().getResourceAsStream("/tiles/wall.png")));
+            tiles[1].collidable = true;
+            tiles[2] = new Tile(ImageIO.read(getClass().getResourceAsStream("/tiles/water01.png")));
+            tiles[1].collidable = true;
+            tiles[3] = new Tile(ImageIO.read(getClass().getResourceAsStream("/tiles/floor01.png")));
+            tiles[4] = new Tile(ImageIO.read(getClass().getResourceAsStream("/tiles/tree.png")));
+            tiles[1].collidable = true;
+            tiles[5] = new Tile(ImageIO.read(getClass().getResourceAsStream("/tiles/road00.png")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -62,7 +69,7 @@ public class TileManager {
                     x * gJP.tileSize - gJP.tileSize < player.cordX + player.screenX &&
                     y * gJP.tileSize + gJP.tileSize > player.cordY - player.screenX &&
                     y * gJP.tileSize - gJP.tileSize < player.cordY + player.screenX) {
-                    g.drawImage(currentSprite[world[y][x]], mapX, mapY, 48, 48, null);
+                    g.drawImage(tiles[world[y][x]].image, mapX, mapY, gJP.tileSize, gJP.tileSize, null);
                 }
             }
         }

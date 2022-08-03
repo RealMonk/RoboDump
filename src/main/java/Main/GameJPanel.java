@@ -2,7 +2,6 @@ package Main;
 
 import Beings.Entity;
 import Beings.Player;
-import Beings.TileManager;
 import Beings.mario;
 import Forces.Force;
 import Forces.Gravity;
@@ -17,11 +16,10 @@ public class GameJPanel extends JPanel implements Runnable {
     //INIT TIME VARs
     @Getter
     private static final int FPS = 60;
-    static GameJPanel gJP = new GameJPanel();
     //INIT GRAPHICS VARs
-    final static int originalTileSize = 16;
+    public final static int originalTileSize = 16;
     final static int scale = 3;
-    public  final int tileSize = originalTileSize * scale;
+    public final int tileSize = originalTileSize * scale;
     final static int maxScreenCol = 16;
     final static int maxScreenRow = 12;
     @Getter
@@ -38,6 +36,7 @@ public class GameJPanel extends JPanel implements Runnable {
     public Player player;
     Force gravity = new Gravity();
     TileManager tileManager;
+    public CollisionDetector colDetector = new CollisionDetector(this);
 
     // WORLD SETTINGS
     public final int maxWorldCol = 50;

@@ -21,7 +21,7 @@ public class Player extends Entity {
     private final BufferedImage[] down = new BufferedImage[2];
     private final BufferedImage[] left = new BufferedImage[2];
     private final BufferedImage[] right = new BufferedImage[2];
-    public int cordX, cordY, speed;
+
     public final int screenX;
     public final int screenY;
     public Player(GameJPanel gJP,InputHandler inputH) {
@@ -33,7 +33,7 @@ public class Player extends Entity {
         this.setWeightless(true);
         screenX = gJP.getScreenWidth()/2 - (gJP.tileSize/2);
         screenY = gJP.getScreenHeight()/2 - (gJP.tileSize/2);
-
+        collisionArea = new Rectangle(8,16,30,30);
         try {
             up[0] = ImageIO.read(getClass().getResourceAsStream("/player/walk/boy_up_1.png"));
             up[1] = ImageIO.read(getClass().getResourceAsStream("/player/walk/boy_up_2.png"));
@@ -70,21 +70,26 @@ public class Player extends Entity {
         }
 
         switch (inputH.xDirection){
-            case LEFT -> {this.cordX -= speed; direction = Direction.LEFT; }
-            case RIGHT -> {this.cordX += speed;direction = Direction.RIGHT; }
+            case LEFT -> { direction = Direction.LEFT;cordX -= speed; }
+            case RIGHT -> {direction = Direction.RIGHT; }
         }
 
         switch (inputH.yDirection){
-            case UP -> {cordY -= speed; direction = Direction.UP; }
-            case DOWN -> {cordY += speed; direction = Direction.DOWN; }
+            case UP -> { direction = Direction.UP; }
+            case DOWN -> { direction = Direction.DOWN; }
         }
+        collided = false;
+        gJP.colDetector.checkTile(this);
+        System.out.println(direction);
+        if (!collided){
+            switch (direction){
+                case LEFT : {this.currentSprite[0] = left[frameNumber];}
+                case RIGHT : {this.currentSprite[0] = right[frameNumber];cordX += speed;}
+                case UP : {this.currentSprite[0] = up[frameNumber];cordY -= speed;}
+                case DOWN : {this.currentSprite[0] = down[frameNumber];cordY += speed;}
+            }
+        } else System.out.println("collided");
 
-        switch (direction){
-            case LEFT -> {this.currentSprite[0] = left[frameNumber];}
-            case RIGHT -> {this.currentSprite[0] = right[frameNumber];}
-            case UP -> {this.currentSprite[0] = up[frameNumber];}
-            case DOWN -> {this.currentSprite[0] = down[frameNumber];}
-        }
 
         if (!(inputH.yDirection == Direction.CENTER) || !(inputH.xDirection == Direction.CENTER)){
             animationForward();
